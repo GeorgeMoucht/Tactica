@@ -1,62 +1,22 @@
-# OS
-.DS_Store
-Thumbs.db
-
-# Build output
+cat > .gitignore <<'GIT'
 bin/
 obj/
-[Ll]ogs/
-*.log
-artifacts/
-publish/
-dist/
-
-# Visual Studio
 .vs/
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
-
-# Rider
 .idea/
-*.sln.iml
-
-# VS Code (keep useful project files)
 .vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
 !.vscode/launch.json
 !.vscode/tasks.json
-
-# NuGet/packages
-packages/
-.nuget/packages/
-
-# Test/coverage
+!.vscode/settings.json
+.DS_Store
+Logs/
+*.log
 TestResults/
-*.trx
-*.coverage
-*.coveragexml
-coverage/
-.coverage/
-coverlet*.json
-
-# Benchmark/other tooling
 BenchmarkDotNet.Artifacts/
-_ncrunch*/
-*.ncrunchproject
-
-# EF Core / local DBs (keep Migrations tracked)
-*.db
-*.sqlite
-*.sqlite3
-
-# App config (keep normal appsettings; ignore local-only overrides)
 appsettings.*.local.json
+GIT
 
-# Node (if you add Angular here later)
-node_modules/
-npm-debug.log*
-yarn-error.log*
-pnpm-debug.log*
+cat > global.json <<'JSON'
+{
+  "sdk": { "version": "8.0.302", "rollForward": "latestFeature" }
+}
+JSON
