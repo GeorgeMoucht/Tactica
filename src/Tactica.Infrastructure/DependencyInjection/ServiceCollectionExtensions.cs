@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tactica.Infrastructure.Persistence;
 
-namespace Tactica.Infrastructure;
+namespace Tactica.Infrastructure.DependencyInjection;
 
 /// <summary>
 /// DI registration entry points for the Infrastructure layer.

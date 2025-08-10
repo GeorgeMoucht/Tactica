@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Tactica.Infrastructure;
+using Tactica.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

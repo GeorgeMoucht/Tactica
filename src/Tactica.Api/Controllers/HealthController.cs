@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tactica.Infrastructure;
+using Tactica.Infrastructure.Persistence;
 
 namespace Tactica.Api.Controllers;
 

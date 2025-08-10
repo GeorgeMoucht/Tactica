@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Tactica.Infrastructure;
 
-namespace Tactica.Infrastructure;
+namespace Tactica.Infrastructure.Persistence;
 
 /// <summary>
 /// EF Core database context for the Tactica Application.
@@ -12,9 +11,7 @@ public class TacticaDbContext : DbContext
     /// Initializes a new instance of <see cref="TacticaDbContext" />.
     /// </summary>
     /// <param name="options">The context options supplied by DI.</param>
-    public TacticaDbContext(DbContextOptions<TacticaDbContext> options) : base(options)
-    {
-    }
+    public TacticaDbContext(DbContextOptions<TacticaDbContext> options) : base(options) { }
 
     // Add DbSet<TEntity> properties here when you create entities, e.g.:
     // public DbSet<Project> Projects => Set<Project>();
@@ -24,7 +21,6 @@ public class TacticaDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
-        // Keep model configuration in separate classes later via IEntityTypeConfiguration<T>.
-        // Example: modelBuilder.ApplyConfigurationsFromAssembly(typeof(TacticaDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TacticaDbContext).Assembly);
     }
 }
