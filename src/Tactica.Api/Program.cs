@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Tactica.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.AddSwaggerGen(c =>
     if (File.Exists(xmlPath))
         c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
 });
+
+// Infrastructure (DbContext, etc.)
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
