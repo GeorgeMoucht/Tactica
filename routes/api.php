@@ -1,0 +1,31 @@
+<?php
+
+use App\Http\Controllers\Api\V1\AuthController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:api');
+
+/**
+ * This is how we create routes with middleware
+ * Route::middleware(['auth:api', CheckToken::using('admin')])
+ *    ->get('/admin/dashboard', ...);
+ *
+ * Route::middleware(['auth:api', CheckToken::using('teacher')])
+ *    ->get('/teacher/classes', ...);
+ */
+
+Route::prefix('v1')->group(function () {
+    Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:auth-register');
+    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:auth-login');
+    Route::post('auth/refresh', [AuthController::class, 'refresh'])->name('auth.refresh')->middleware('throttle:auth-refresh');
+
+    Route::middleware('auth:api')->group(function () {
+        Route::get('me', [AuthController::class, 'me']);
+        Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::post('auth/logout-all', [AuthController::class, 'logoutAll']);
+        Route::post('auth/change-password', [AuthController::class, 'changePassword'])->middleware('throttle:auth-change-password');
+    });
+});
