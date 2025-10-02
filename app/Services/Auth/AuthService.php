@@ -44,8 +44,7 @@ class AuthService
         $user = $this->users->findByEmail($dto->email);
 
         if (!$user || !Hash::check($dto->password, $user->password)) {
-            // throw new RuntimeException('Invalid credentials', 401);
-            throw new UnauthorizedException('Invalid credentials');
+            throw new UnauthorizedException('Λάθος Στοιχεία.');
         }
 
 
