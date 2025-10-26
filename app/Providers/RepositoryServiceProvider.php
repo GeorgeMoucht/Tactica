@@ -4,8 +4,12 @@ namespace App\Providers;
 
 use App\Contracts\Auth\TokenIssuer;
 use App\Infrastructure\Auth\PassportTokenIssuer;
+use App\Repositories\Contracts\GuardianRepository;
+use App\Repositories\Contracts\StudentRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Eloquent\EloquentGuardianRepository;
+use App\Repositories\Eloquent\EloquentStudentRepository;
 use App\Repositories\Eloquent\EloquentUserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -14,5 +18,8 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(TokenIssuer::class, PassportTokenIssuer::class);
+
+        $this->app->bind(GuardianRepository::class, EloquentGuardianRepository::class);
+        $this->app->bind(StudentRepository::class, EloquentStudentRepository::class);
     }
 }
