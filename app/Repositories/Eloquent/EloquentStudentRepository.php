@@ -28,7 +28,7 @@ class EloquentStudentRepository implements StudentRepository
 
     public function paginateForList(array $filters = []): LengthAwarePaginator
     {
-        $q       = $filters['q'] ?? null;
+        $q       = $filters['query'] ?? null;
         $perPage = (int)($filters['perPage'] ?? 10);
 
         return Student::query()

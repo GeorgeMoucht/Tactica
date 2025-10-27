@@ -18,7 +18,7 @@ class StudentController extends BaseApiController
     public function index(IndexStudentRequest $request)
     {
         $filters = [
-            'q'         => $request->validated('q') ?? null,
+            'query'         => $request->validated('query') ?? null,
             'perPage'   => (int)($request->validated('pageSize') ?? 10),
         ];
 
