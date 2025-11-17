@@ -8,8 +8,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Student extends Model
 {
     protected $fillable = [
-        'first_name', 'last_name', 'birthdate', 'email', 'phone',
-        'address', 'level', 'interests', 'notes', 'medical_note', 'consent_media'
+        'first_name',
+        'last_name',
+        'birthdate',
+        'email',
+        'phone',
+        'preferred_contact',
+        'contact_notes',
+        'address',
+        'level',
+        'interests',
+        'notes',
+        'medical_note',
+        'consent_media'
     ];
 
     protected $casts = [
@@ -22,6 +33,7 @@ class Student extends Model
     public function guardians(): BelongsToMany
     {
         return $this->belongsToMany(Guardian::class)
+            ->withPivot('relation')
             ->withTimestamps();
     }
 

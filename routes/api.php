@@ -30,8 +30,10 @@ Route::prefix('v1')->group(function () {
         Route::post('auth/logout-all', [AuthController::class, 'logoutAll']);
         Route::post('auth/change-password', [AuthController::class, 'changePassword'])->middleware('throttle:auth-change-password');
 
+        // THS IS GOING TO BE DEPRECATED
         Route::post('/registrations', [RegistrationController::class, 'store']);
 
+        Route::post('/students', [StudentController::class, 'store']);
         Route::get('/students', [StudentController::class, 'index']);
         Route::get('/students/{student}', [StudentController::class, 'show']);
         Route::put('/students/{student}', [StudentController::class, 'update']);

@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class EloquentStudentRepository implements StudentRepository
 {
+    // Probably will be deprecated.
     public function create(StudentDTO $dto): Student
     {
         return Student::create([
@@ -23,6 +24,26 @@ class EloquentStudentRepository implements StudentRepository
             'notes'         => $dto->notes,
             'medical_note'  => $dto->medical_note,
             'consent_media' => $dto->consent_media
+        ]);
+    }
+
+    public function createFromArray(array $data): Student
+    {
+        // $data comes from StoreStudentRequest validated shape
+        return Student::create([
+            'first_name'        => $data['first_name'],
+            'last_name'         => $data['last_name'],
+            'birthdate'         => $data['birthdate'],
+            'email'             => $data['email']         ?? null, 
+            'phone'             => $data['phone']         ?? null,
+            'preferred_contact' => $data['preferred_contact'] ?? null,
+            'contact_notes'     => $data['contact_notes'] ?? null,
+            'address'           => $data['address']       ?? null,   // JSON cast
+            'level'             => $data['level']         ?? null,
+            'interests'         => $data['interests']     ?? null,   // JSON cast
+            'notes'             => $data['notes']         ?? null,
+            'medical_note'      => $data['medical_note']  ?? null,
+            'consent_media'     => (bool)($data['consent_media'] ?? false),
         ]);
     }
 
@@ -59,17 +80,19 @@ class EloquentStudentRepository implements StudentRepository
         if (!$student) return null;
 
         $student->fill([
-            'first_name'    => $data['first_name']    ?? $student->first_name,
-            'last_name'     => $data['last_name']     ?? $student->last_name,
-            'birthdate'     => $data['birthdate']     ?? $student->birthdate,
-            'email'         => $data['email']         ?? $student->email,
-            'phone'         => $data['phone']         ?? $student->phone,
-            'address'       => $data['address']       ?? $student->address,
-            'level'         => $data['level']         ?? $student->level,
-            'interests'     => $data['interests']     ?? $student->interests,
-            'notes'         => $data['notes']         ?? $student->notes,
-            'medical_note'  => $data['medical_note']  ?? $student->medical_note,
-            'consent_media' => array_key_exists('consent_media', $data) ? $data['consent_media'] : $student->consent_media,
+            'first_name'        => $data['first_name']    ?? $student->first_name,
+            'last_name'         => $data['last_name']     ?? $student->last_name,
+            'birthdate'         => $data['birthdate']     ?? $student->birthdate,
+            'email'             => $data['email']         ?? $student->email,
+            'phone'             => $data['phone']         ?? $student->phone,
+            'preferred_contact' => $data['preferred_contact'] ?? $student->preferred_contact,
+            'contact_notes'     => $data['contact_notes']     ?? $student->contact_notes,
+            'address'           => $data['address']       ?? $student->address,
+            'level'             => $data['level']         ?? $student->level,
+            'interests'         => $data['interests']     ?? $student->interests,
+            'notes'             => $data['notes']         ?? $student->notes,
+            'medical_note'      => $data['medical_note']  ?? $student->medical_note,
+            'consent_media'     => array_key_exists('consent_media', $data) ? $data['consent_media'] : $student->consent_media,
         ]);
 
         $student->save();

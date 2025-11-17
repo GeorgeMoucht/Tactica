@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('guardian_student', function (Blueprint $table) {
             $table->unsignedBigInteger('guardian_id');
             $table->unsignedBigInteger('student_id');
+
+            $table->string('relation', 20)->nullable();
             $table->timestamps();
 
             $table->primary(['guardian_id', 'student_id']);
