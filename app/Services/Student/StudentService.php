@@ -38,6 +38,7 @@ class StudentService
                 'name'       => trim($s->first_name.' '.$s->last_name),
                 'email'      => $s->email,
                 'phone'      => $s->phone,
+                'is_member'  => (bool) $s->is_member,
                 'level'      => $s->level,
                 'created_at' => $s->created_at?->toIso8601String(), // <-- fix the typo
             ];

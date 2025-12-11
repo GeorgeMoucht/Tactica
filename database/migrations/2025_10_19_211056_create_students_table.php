@@ -25,6 +25,8 @@ return new class extends Migration
             $table->json('interests')->nullable(); // ["painting", "ceramics", "drawing"]
             $table->text('notes')->nullable();
             $table->text('medical_note')->nullable();
+            $table->boolean('is_member')->default(false);
+            $table->date('registration_date')->nullable();
             $table->boolean('consent_media')->default(false);
 
             $table->timestamps();

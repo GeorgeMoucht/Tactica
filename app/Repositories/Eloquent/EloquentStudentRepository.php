@@ -34,16 +34,22 @@ class EloquentStudentRepository implements StudentRepository
             'first_name'        => $data['first_name'],
             'last_name'         => $data['last_name'],
             'birthdate'         => $data['birthdate'],
+
             'email'             => $data['email']         ?? null, 
             'phone'             => $data['phone']         ?? null,
             'preferred_contact' => $data['preferred_contact'] ?? null,
             'contact_notes'     => $data['contact_notes'] ?? null,
+
             'address'           => $data['address']       ?? null,   // JSON cast
             'level'             => $data['level']         ?? null,
             'interests'         => $data['interests']     ?? null,   // JSON cast
+
             'notes'             => $data['notes']         ?? null,
             'medical_note'      => $data['medical_note']  ?? null,
             'consent_media'     => (bool)($data['consent_media'] ?? false),
+
+            'is_member'         => (bool)($data['is_member'] ?? false),
+            'registration_date' => $data['registration_date'] ?? null,
         ]);
     }
 

@@ -20,14 +20,20 @@ class Student extends Model
         'interests',
         'notes',
         'medical_note',
-        'consent_media'
+        'consent_media',
+
+        'is_member',
+        'registration_date',
     ];
 
     protected $casts = [
-        'address'       => 'array',
-        'interests'     => 'array',
-        'birthdate'     => 'date:Y-m-d',
-        'consent_media' => 'boolean'
+        'address'               => 'array',
+        'interests'             => 'array',
+        'birthdate'             => 'date:Y-m-d',
+        'consent_media'         => 'boolean',
+
+        'is_member'             => 'boolean',
+        'registration_date'     => 'date',
     ];
 
     public function guardians(): BelongsToMany
