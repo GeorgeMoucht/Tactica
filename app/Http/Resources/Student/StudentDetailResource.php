@@ -21,6 +21,8 @@ class StudentDetailResource extends JsonResource
             'medical_note'  => $this->medical_note,
             'consent_media' => (bool)$this->consent_media,
             'address'       => $this->address,
+            'is_member'     => (bool) $this->is_member,
+            'registration_date' => $this->registration_date?->toDateString(),
 
             'guardians'    => $this->guardians->map(fn($g) => [
                 'id'         => $g->id,

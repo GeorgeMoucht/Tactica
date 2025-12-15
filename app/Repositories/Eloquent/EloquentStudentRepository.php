@@ -99,7 +99,21 @@ class EloquentStudentRepository implements StudentRepository
             'notes'             => $data['notes']         ?? $student->notes,
             'medical_note'      => $data['medical_note']  ?? $student->medical_note,
             'consent_media'     => array_key_exists('consent_media', $data) ? $data['consent_media'] : $student->consent_media,
+            'is_member'         => array_key_exists('is_member', $data) ? (bool)$data['is_member'] : $student->is_member,
+            'registration_date' => array_key_exists('registration_date', $data) ? $data['registration_date'] : $student->registration_date,
         ]);
+
+        if (
+            $student->is_member &&
+            array_key_exists('is_member', $data) &&
+            !array_key_exists('registration_date', $data)
+        ) {
+            $student->registration_date = now()->toDateString();
+        }
+
+        if (!$student->is_member) {
+            $student->registration_date = null;
+        }
 
         $student->save();
 
