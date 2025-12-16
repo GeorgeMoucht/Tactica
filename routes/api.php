@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\GuardianController;
+use App\Http\Controllers\Api\V1\PurchaseController;
 use App\Http\Controllers\Api\V1\RegistrationController;
 use App\Http\Controllers\Api\V1\StudentController;
 use Illuminate\Http\Request;
@@ -39,9 +40,15 @@ Route::prefix('v1')->group(function () {
         Route::get('/students/{student}', [StudentController::class, 'show']);
         Route::put('/students/{student}', [StudentController::class, 'update']);
 
+        Route::post('/students/{student}/purchases', [PurchaseController::class, 'store']);
+
+
+
         Route::post('/guardians', [GuardianController::class, 'store']);
         Route::get('/guardians', [GuardianController::class, 'index']);
         Route::get('/guardians/{guardian}', [GuardianController::class, 'show']);
         Route::put('/guardians/{guardian}', [GuardianController::class, 'update']);
+
+
     });
 });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model
 {
@@ -21,9 +22,6 @@ class Student extends Model
         'notes',
         'medical_note',
         'consent_media',
-
-        'is_member',
-        'registration_date',
     ];
 
     protected $casts = [
@@ -31,9 +29,6 @@ class Student extends Model
         'interests'             => 'array',
         'birthdate'             => 'date:Y-m-d',
         'consent_media'         => 'boolean',
-
-        'is_member'             => 'boolean',
-        'registration_date'     => 'date',
     ];
 
     public function guardians(): BelongsToMany
@@ -46,5 +41,24 @@ class Student extends Model
     public function getNameAttribute(): string
     {
         return trim($this->first_name.' '.$this->last_name);
+    }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(StudentPurchase::class);
+    }
+
+    public function entitlements(): HasMany
+    {
+        return $this->hasMany(StudentEntitlement::class);
+    }
+
+    public function getIsMemberAttribute(): bool
+    {
+        return $this->entitlements()
+            ->whereDate('starts_at', '<=', today())
+            ->whereDate('ends_at', '>=', today())
+            ->wherehas('product', fn ($q) => $q->where('type', 'registration'))
+            ->exists();
     }
 }
