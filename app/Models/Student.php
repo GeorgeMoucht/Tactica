@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model
 {
+    protected $appends = ['is_member'];
+
     protected $fillable = [
         'first_name',
         'last_name',
@@ -55,10 +57,19 @@ class Student extends Model
 
     public function getIsMemberAttribute(): bool
     {
-        return $this->entitlements()
-            ->whereDate('starts_at', '<=', today())
-            ->whereDate('ends_at', '>=', today())
-            ->wherehas('product', fn ($q) => $q->where('type', 'registration'))
-            ->exists();
+        if (!$this->relationLoaded('entitlements')) {
+            $this->load('entitlements.product');
+        }
+
+        return $this->entitlements->contains(fn ($e) =>
+            $e->starts_at <= today() &&
+            $e->ends_at >= today() &&
+            $e->product?->type === 'registration'
+        );
+        // return $this->entitlements()
+        //     ->whereDate('starts_at', '<=', today())
+        //     ->whereDate('ends_at', '>=', today())
+        //     ->wherehas('product', fn ($q) => $q->where('type', 'registration'))
+        //     ->exists();
     }
 }
