@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\GuardianController;
+use App\Http\Controllers\Api\V1\MembershipController;
 use App\Http\Controllers\Api\V1\PurchaseController;
-use App\Http\Controllers\Api\V1\RegistrationController;
 use App\Http\Controllers\Api\V1\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,15 +33,16 @@ Route::prefix('v1')->group(function () {
         Route::post('auth/change-password', [AuthController::class, 'changePassword'])->middleware('throttle:auth-change-password');
 
         // THS IS GOING TO BE DEPRECATED
-        Route::post('/registrations', [RegistrationController::class, 'store']);
+        // Route::post('/registrations', [RegistrationController::class, 'store']);
 
         Route::post('/students', [StudentController::class, 'store']);
         Route::get('/students', [StudentController::class, 'index']);
         Route::get('/students/{student}', [StudentController::class, 'show']);
         Route::put('/students/{student}', [StudentController::class, 'update']);
 
-        Route::post('/students/{student}/purchases', [PurchaseController::class, 'store']);
+        // Route::post('/students/{student}/purchases', [PurchaseController::class, 'store']);
 
+        Route::post('/students/{student}/memberships', [MembershipController::class, 'store']);
 
 
         Route::post('/guardians', [GuardianController::class, 'store']);

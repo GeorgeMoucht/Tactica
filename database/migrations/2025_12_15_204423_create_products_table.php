@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->enum('type', ['registration', 'subscription', 'workshop']);
+            $table->enum('type', ['registration', 'subscription', 'workshop'])->unique()->comment('business product type');
 
             $table->decimal('price', 8, 2);
             $table->enum('billing_period', ['year', 'month', 'one_time']);

@@ -13,6 +13,8 @@ interface StudentRepository
     
     public function findWithGuardians(int $id): ?Student;
 
+    public function findWithMembership(int $id): ?Student;
+
     public function update(int $id, array $data): ?Student;
 
     public function createFromArray(array $data): Student;
