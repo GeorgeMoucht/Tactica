@@ -15,6 +15,8 @@ interface StudentRepository
 
     public function findWithMembership(int $id): ?Student;
 
+    public function findWithHistory(int $id): ?Student;
+
     public function update(int $id, array $data): ?Student;
 
     public function createFromArray(array $data): Student;

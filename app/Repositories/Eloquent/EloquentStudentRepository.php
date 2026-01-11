@@ -79,6 +79,16 @@ class EloquentStudentRepository implements StudentRepository
         ])->find($id);
     }
 
+    public function findWithHistory(int $id): ?Student
+    {
+        return Student::with([ 
+            'entitlements.product',
+            // TO DO:
+            // 'enrollments.class'
+            // 'subscriptions.product'
+        ])->find($id);
+    }
+
     public function findWithMembership(int $id): ?Student
     {
         return Student::with([

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\MembershipController;
 use App\Http\Controllers\Api\V1\PurchaseController;
 use App\Http\Controllers\Api\V1\StudentController;
+use App\Http\Controllers\Api\V1\StudentHistoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::prefix('v1')->group(function () {
         // Route::post('/students/{student}/purchases', [PurchaseController::class, 'store']);
 
         Route::post('/students/{student}/memberships', [MembershipController::class, 'store']);
+        Route::get('/students/{student}/history', [StudentHistoryController::class, 'index']);
 
 
         Route::post('/guardians', [GuardianController::class, 'store']);
