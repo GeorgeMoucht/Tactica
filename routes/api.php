@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\ClassController;
 use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\MembershipController;
 use App\Http\Controllers\Api\V1\PurchaseController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\StudentHistoryController;
+use App\Http\Controllers\Api\V1\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,5 +55,11 @@ Route::prefix('v1')->group(function () {
         Route::put('/guardians/{guardian}', [GuardianController::class, 'update']);
 
 
+        Route::get('/classes', [ClassController::class, 'index']);
+        Route::post('/classes', [ClassController::class, 'store']);
+        Route::get('/classes/{classId}', [ClassController::class, 'show']);
+        Route::put('/classes/{classId}', [ClassController::class, 'update']);
+
+        Route::get('/teachers', [TeacherController::class, 'index']);
     });
 });

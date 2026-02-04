@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Auth\TokenIssuer;
 use App\Infrastructure\Auth\PassportTokenIssuer;
+use App\Repositories\Contracts\ClassRepository;
 use App\Repositories\Contracts\GuardianRepository;
 use App\Repositories\Contracts\MembershipRepository;
 use App\Repositories\Contracts\ProductRepository;
@@ -12,6 +13,7 @@ use App\Repositories\Contracts\StudentPurchaseRepository;
 use App\Repositories\Contracts\StudentRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Eloquent\EloquentClassRepository;
 use App\Repositories\Eloquent\EloquentGuardianRepository;
 use App\Repositories\Eloquent\EloquentMembershipRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
@@ -35,5 +37,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(MembershipRepository::class, EloquentMembershipRepository::class);
         $this->app->bind(ProductRepository::class, EloquentProductRepository::class);
+
+        $this->app->bind(ClassRepository::class, EloquentClassRepository::class);
     }
 }
