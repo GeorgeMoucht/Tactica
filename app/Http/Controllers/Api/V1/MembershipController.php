@@ -24,10 +24,6 @@ class MembershipController extends BaseApiController
             $request->validated()
         );
 
-        if (!$student) {
-            return $this->getError('Student not found', 404);
-        }
-
         return $this->getSuccess(
             new StudentDetailResource($student),
             'Annual membership activated'

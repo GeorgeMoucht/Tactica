@@ -2,6 +2,7 @@
 
 namespace App\Services\Student;
 
+use App\Exceptions\NotFoundException;
 use App\Http\Requests\Student\StoreStudentRequest;
 use App\Models\Student;
 use App\Repositories\Contracts\GuardianRepository;
@@ -56,17 +57,25 @@ class StudentService
             );
     }
 
-    /** 
-     * Student detail with guardians (or null if not found)
+    /**
+     * Student detail with guardians
      */
-    public function detail(int $id): ?Student
+    public function detail(int $id): Student
     {
-        return $this->students->findWithGuardians($id);
+        $student = $this->students->findWithGuardians($id);
+        if (!$student) {
+            throw new NotFoundException('Student not found.');
+        }
+        return $student;
     }
 
-    public function update(int $id, array $data): ?Student
+    public function update(int $id, array $data): Student
     {
-        return $this->students->update($id, $data);
+        $student = $this->students->update($id, $data);
+        if (!$student) {
+            throw new NotFoundException('Student not found.');
+        }
+        return $student;
     }
 
     /**

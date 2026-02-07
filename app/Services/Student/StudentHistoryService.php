@@ -2,6 +2,7 @@
 
 namespace App\Services\Student;
 
+use App\Exceptions\NotFoundException;
 use App\Repositories\Contracts\StudentRepository;
 use App\Repositories\Contracts\StudentEntitlementRepository;
 
@@ -16,15 +17,14 @@ class StudentHistoryService
         $this->entitlements = $entitlements;
     }
 
-    public function getHistory(int $studentId): ?array
+    public function getHistory(int $studentId): array
     {
         $student = $this->students->findWithHistory($studentId);
 
         if (!$student) {
-            return null;
+            throw new NotFoundException('Student not found.');
         }
 
-        
         return [
             'student_id' => $studentId,
             'memberships' => $this->entitlements->findMembershipsByStudent($studentId),

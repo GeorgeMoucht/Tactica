@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseClass extends Model
 {
@@ -12,6 +13,8 @@ class CourseClass extends Model
     protected $fillable = [
         'title',
         'description',
+        'type',
+        'active',
         'day_of_week',
         'starts_time',
         'ends_time',
@@ -21,11 +24,17 @@ class CourseClass extends Model
 
     protected $casts = [
         'day_of_week' => 'integer',
-        'capacity'    => 'integer'
+        'capacity'    => 'integer',
+        'active'      => 'boolean',
     ];
 
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(ClassSession::class, 'class_id');
     }
 }

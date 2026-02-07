@@ -59,6 +59,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/classes', [ClassController::class, 'store']);
         Route::get('/classes/{classId}', [ClassController::class, 'show']);
         Route::put('/classes/{classId}', [ClassController::class, 'update']);
+        Route::delete('/classes/{classId}', [ClassController::class, 'destroy']);
+        Route::patch('/classes/{classId}/toggle-active', [ClassController::class, 'toggleActive']);
 
         Route::get('/teachers', [TeacherController::class, 'index']);
     });

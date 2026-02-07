@@ -12,6 +12,8 @@ class ClassDetailResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             'description' => $this->description,
+            'type'        => $this->type,
+            'active'      => (bool) $this->active,
 
             'day_of_week' => $this->day_of_week,
             'starts_time' => $this->starts_time,
@@ -24,6 +26,15 @@ class ClassDetailResource extends JsonResource
                 'name' => $this->teacher->name ?? null,
                 'role' => $this->teacher->role ?? null,
             ] : null,
+
+            'sessions' => $this->whenLoaded('sessions', function () {
+                return $this->sessions->map(fn($s) => [
+                    'id'          => $s->id,
+                    'date'        => $s->date->toDateString(),
+                    'starts_time' => $s->starts_time,
+                    'ends_time'   => $s->ends_time,
+                ]);
+            }, []),
 
             'created_at'  => $this->created_at?->toDateTimeString(),
             'updated_at'  => $this->updated_at?->toDateTimeString(),

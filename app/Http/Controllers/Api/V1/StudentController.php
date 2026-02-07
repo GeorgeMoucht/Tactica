@@ -49,10 +49,6 @@ class StudentController extends BaseApiController
     {
         $student = $this->service->detail($studentId);
 
-        if (!$student) {
-            return $this->getError('Student not found', 404);
-        }
-
         return $this->getSuccess(
             new StudentDetailResource($student),
             'Student retrieved'
@@ -66,10 +62,6 @@ class StudentController extends BaseApiController
             $studentId,
             $request->validated()
         );
-
-        if (!$student) {
-            return $this->getError('Student not found', 404);
-        }
 
         return $this->getSuccess(
             new StudentDetailResource($student),

@@ -19,10 +19,6 @@ class StudentHistoryController extends BaseApiController
     {
         $history = $this->service->getHistory($studentId);
 
-        if ($history === null) {
-            return $this->getError('Student not found', 404);
-        }
-
         return $this->getSuccess(
             new StudentHistoryResource($history),
             'Student history retrieved'

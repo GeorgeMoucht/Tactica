@@ -11,6 +11,8 @@ class ClassListResource extends JsonResource
         return [
             'id'         => $this->id,
             'title'      => $this->title,
+            'type'       => $this->type,
+            'active'     => (bool) $this->active,
             'day_of_week'=> $this->day_of_week,
             'starts_time'=> $this->starts_time,
             'ends_time'  => $this->ends_time,

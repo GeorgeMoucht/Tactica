@@ -43,10 +43,6 @@ class GuardianController extends BaseApiController
     {
         $guardian = $this->service->detail($guardianId);
 
-        if (!$guardian) {
-            return $this->getError('Guardian not found', 404);
-        }
-
         return $this->getSuccess(
             new GuardianDetailResource($guardian),
             'Guardian retrieved'

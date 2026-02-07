@@ -25,6 +25,12 @@ class ClassController extends BaseApiController
         $filters = [
             'query' => $request->validated('query') ?? null,
             'perPage' => (int)($request->validated('pageSize') ?? 10),
+            'type' => $request->validated('type') ?? null,
+            'active' => $request->has('active') ? filter_var($request->validated('active'), FILTER_VALIDATE_BOOLEAN) : null,
+            'day_of_week' => $request->validated('day_of_week') ?? null,
+            'teacher_id' => $request->validated('teacher_id') ?? null,
+            'sort_by' => $request->validated('sort_by') ?? 'id',
+            'sort_order' => $request->validated('sort_order') ?? 'desc',
         ];
 
         $paginator = $this->service->list($filters);
@@ -48,10 +54,6 @@ class ClassController extends BaseApiController
     {
         $class = $this->service->detail($classId);
 
-        if (!$class) {
-            return $this->getError('Class not found', 404);
-        }
-
         return $this->getSuccess(
             new ClassDetailResource($class),
             'Class retrieved'
@@ -63,13 +65,28 @@ class ClassController extends BaseApiController
     {
         $class = $this->service->update($classId, $request->validated());
 
-        if (!$class) {
-            return $this->getError('Class not found', 404);
-        }
-
         return $this->getSuccess(
             new ClassDetailResource($class),
             'Class updated'
+        );
+    }
+
+    // DELETE /api/v1/classes/{classId}
+    public function destroy(int $classId)
+    {
+        $this->service->destroy($classId);
+
+        return $this->getSuccess(null, 'Class deleted');
+    }
+
+    // PATCH /api/v1/classes/{classId}/toggle-active
+    public function toggleActive(int $classId)
+    {
+        $class = $this->service->toggleActive($classId);
+
+        return $this->getSuccess(
+            new ClassDetailResource($class),
+            'Class status toggled'
         );
     }
 }

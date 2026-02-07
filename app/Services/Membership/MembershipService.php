@@ -3,7 +3,8 @@
 namespace App\Services\Membership;
 
 use App\Data\DTO\Membership\CreateMembershipDTO;
-// use App\Models\Product;
+use App\Exceptions\BusinessException;
+use App\Exceptions\NotFoundException;
 use App\Models\Student;
 use App\Repositories\Contracts\MembershipRepository;
 use App\Repositories\Contracts\ProductRepository;
@@ -24,16 +25,18 @@ class MembershipService
         $this->products = $products;
     }
 
-    public function createAnnualMembership(int $studentId, array $data): ?Student
+    public function createAnnualMembership(int $studentId, array $data): Student
     {
         $student = $this->students->findWithMembership($studentId);
 
-        if (!$student) return null;
+        if (!$student) {
+            throw new NotFoundException('Student not found.');
+        }
 
         $product = $this->products->findRegistrationProduct();
 
         if ($this->memberships->hasActiveMembership($studentId)) {
-            throw new \DomainException('Student already has an active membership.');
+            throw new BusinessException('Student already has an active membership.');
         }
 
         $dto = new CreateMembershipDTO(

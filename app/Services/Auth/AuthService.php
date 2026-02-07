@@ -8,8 +8,8 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Data\DTO\Auth\RegisterDTO;
+use App\Exceptions\InvalidTokenException;
 use App\Exceptions\UnauthorizedException;
-use RuntimeException;
 
 class AuthService
 {
@@ -63,7 +63,7 @@ class AuthService
         $payload = $this->issuer->issueWithRefreshToken($refreshToken, '');
 
         if (!isset($payload['access_token'])) {
-            throw new \RuntimeException('Invalid refresh token', 401);
+            throw new InvalidTokenException('Invalid refresh token');
         }
 
         return $payload;

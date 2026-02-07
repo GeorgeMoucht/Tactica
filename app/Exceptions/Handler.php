@@ -40,14 +40,6 @@ class Handler extends ExceptionHandler
                 ], $e->status);
             }
 
-            // Business rule violations (service layer)
-            if ($e instanceof \DomainException) {
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => $e->getMessage(),
-                    'data'    => null,
-                ], 422);
-            }
 
             if ($e instanceof AuthenticationException) {
                 return response()->json([
