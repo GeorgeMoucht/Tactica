@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClassController;
+use App\Http\Controllers\Api\V1\EnrollmentController;
 use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\MembershipController;
+use App\Http\Controllers\Api\V1\MonthlyDueController;
+use App\Http\Controllers\Api\V1\PaymentSummaryController;
 use App\Http\Controllers\Api\V1\PurchaseController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\StudentHistoryController;
@@ -63,5 +66,22 @@ Route::prefix('v1')->group(function () {
         Route::patch('/classes/{classId}/toggle-active', [ClassController::class, 'toggleActive']);
 
         Route::get('/teachers', [TeacherController::class, 'index']);
+
+        // Enrollments
+        Route::post('/students/{student}/enrollments', [EnrollmentController::class, 'store']);
+        Route::get('/students/{student}/enrollments', [EnrollmentController::class, 'indexByStudent']);
+        Route::get('/classes/{classId}/enrollments', [EnrollmentController::class, 'indexByClass']);
+        Route::patch('/enrollments/{enrollment}/withdraw', [EnrollmentController::class, 'withdraw']);
+        Route::patch('/enrollments/{enrollment}/discount', [EnrollmentController::class, 'updateDiscount']);
+
+        // Payment Summary
+        Route::get('/students/{student}/payment-summary', [PaymentSummaryController::class, 'show']);
+
+        // Monthly Dues
+        Route::get('/students/{student}/monthly-dues', [MonthlyDueController::class, 'index']);
+        Route::post('/students/{student}/monthly-dues', [MonthlyDueController::class, 'store']);
+        Route::patch('/monthly-dues/{due}/pay', [MonthlyDueController::class, 'pay']);
+        Route::patch('/monthly-dues/{due}/waive', [MonthlyDueController::class, 'waive']);
+        Route::post('/monthly-dues/generate', [MonthlyDueController::class, 'generate']);
     });
 });

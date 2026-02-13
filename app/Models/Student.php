@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Student extends Model
 {
+    use HasFactory;
+
     protected $appends = ['is_member'];
 
     protected $fillable = [
@@ -71,5 +75,27 @@ class Student extends Model
         //     ->whereDate('ends_at', '>=', today())
         //     ->wherehas('product', fn ($q) => $q->where('type', 'registration'))
         //     ->exists();
+    }
+
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(ClassEnrollment::class);
+    }
+
+    public function activeEnrollments(): HasMany
+    {
+        return $this->hasMany(ClassEnrollment::class)->where('status', 'active');
+    }
+
+    public function enrolledClasses(): BelongsToMany
+    {
+        return $this->belongsToMany(CourseClass::class, 'class_enrollments', 'student_id', 'class_id')
+            ->withPivot(['status', 'enrolled_at', 'withdrawn_at', 'notes'])
+            ->withTimestamps();
+    }
+
+    public function monthlyDues(): HasMany
+    {
+        return $this->hasMany(MonthlyDue::class);
     }
 }

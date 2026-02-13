@@ -42,12 +42,16 @@ abstract class BaseApiController extends Controller
         ], $code);
     }
 
-    protected function paginatedSuccess($paginator, string $message = 'Success')
+    protected function paginatedSuccess($paginator, string $message = 'Success', ?string $resourceClass = null)
     {
+        $items = $resourceClass
+            ? $resourceClass::collection($paginator->items())
+            : $paginator->items();
+
         return response()->json([
             'status'    => 'success',
             'message'   => $message,
-            'data'      => $paginator->items(),
+            'data'      => $items,
             'meta'      => [
                 'current_page'  => $paginator->currentPage(),
                 'per_page'      => $paginator->perPage(),

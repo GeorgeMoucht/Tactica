@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Contracts\Auth\TokenIssuer;
 use App\Infrastructure\Auth\PassportTokenIssuer;
 use App\Repositories\Contracts\ClassRepository;
+use App\Repositories\Contracts\EnrollmentRepository;
 use App\Repositories\Contracts\GuardianRepository;
 use App\Repositories\Contracts\MembershipRepository;
 use App\Repositories\Contracts\ProductRepository;
@@ -14,6 +15,7 @@ use App\Repositories\Contracts\StudentRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\UserRepository;
 use App\Repositories\Eloquent\EloquentClassRepository;
+use App\Repositories\Eloquent\EloquentEnrollmentRepository;
 use App\Repositories\Eloquent\EloquentGuardianRepository;
 use App\Repositories\Eloquent\EloquentMembershipRepository;
 use App\Repositories\Eloquent\EloquentProductRepository;
@@ -21,6 +23,8 @@ use App\Repositories\Eloquent\EloquentStudentEntitlementRepository;
 use App\Repositories\Eloquent\EloquentStudentPurchaseRepository;
 use App\Repositories\Eloquent\EloquentStudentRepository;
 use App\Repositories\Eloquent\EloquentUserRepository;
+use App\Repositories\Contracts\MonthlyDueRepository;
+use App\Repositories\Eloquent\EloquentMonthlyDueRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -39,5 +43,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepository::class, EloquentProductRepository::class);
 
         $this->app->bind(ClassRepository::class, EloquentClassRepository::class);
+        $this->app->bind(EnrollmentRepository::class, EloquentEnrollmentRepository::class);
+        $this->app->bind(MonthlyDueRepository::class, EloquentMonthlyDueRepository::class);
     }
 }

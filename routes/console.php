@@ -10,6 +10,11 @@ Artisan::command('inspire', function () {
 
 Schedule::command('passport:purge --expired --revoked')->hourly();
 
+Schedule::command('dues:generate')->dailyAt('02:00')
+    ->runInBackground()
+    ->withoutOverlapping()
+    ->onOneServer();
+
 // php artisan passport:purge --expired --revoked
 
 // Or in a new tab of cmd run this
