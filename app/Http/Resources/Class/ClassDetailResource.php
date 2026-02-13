@@ -19,7 +19,8 @@ class ClassDetailResource extends JsonResource
             'starts_time' => $this->starts_time,
             'ends_time'   => $this->ends_time,
 
-            'capacity'    => $this->capacity,
+            'capacity'      => $this->capacity,
+            'monthly_price' => (float) $this->monthly_price,
 
             'teacher' => $this->teacher ? [
                 'id'   => $this->teacher->id,

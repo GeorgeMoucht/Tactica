@@ -22,7 +22,8 @@ class UpdateClassRequest extends FormRequest
             'starts_time' => ['sometimes','nullable','date_format:H:i'],
             'ends_time'   => ['sometimes','nullable','date_format:H:i'],
 
-            'capacity'    => ['sometimes','nullable','integer','min:1'],
+            'capacity'      => ['sometimes','nullable','integer','min:1'],
+            'monthly_price' => ['sometimes','numeric','min:0','max:9999.99'],
             'teacher_id'  => ['sometimes','nullable','integer','exists:users,id'],
 
             // Workshop sessions

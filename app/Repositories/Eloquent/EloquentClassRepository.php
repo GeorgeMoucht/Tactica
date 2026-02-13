@@ -70,6 +70,7 @@ class EloquentClassRepository implements ClassRepository
             'ends_time'     => $data['ends_time'] ?? null,
 
             'capacity'      => $data['capacity'] ?? null,
+            'monthly_price' => $data['monthly_price'] ?? 40.00,
             'teacher_id'    => $data['teacher_id'] ?? null,
         ]);
 
@@ -96,8 +97,9 @@ class EloquentClassRepository implements ClassRepository
             'starts_time' => array_key_exists('starts_time', $data) ? ($data['starts_time'] ?? null) : $class->starts_time,
             'ends_time'   => array_key_exists('ends_time', $data) ? ($data['ends_time'] ?? null) : $class->ends_time,
 
-            'capacity'    => array_key_exists('capacity', $data) ? ($data['capacity'] ?? null) : $class->capacity,
-            'teacher_id'  => array_key_exists('teacher_id', $data) ? ($data['teacher_id'] ?? null) : $class->teacher_id,
+            'capacity'      => array_key_exists('capacity', $data) ? ($data['capacity'] ?? null) : $class->capacity,
+            'monthly_price' => array_key_exists('monthly_price', $data) ? $data['monthly_price'] : $class->monthly_price,
+            'teacher_id'    => array_key_exists('teacher_id', $data) ? ($data['teacher_id'] ?? null) : $class->teacher_id,
         ]);
 
         $class->save();

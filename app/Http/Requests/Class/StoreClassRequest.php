@@ -26,7 +26,8 @@ class StoreClassRequest extends FormRequest
             'starts_time' => ['nullable','date_format:H:i'],
             'ends_time'   => ['nullable','date_format:H:i'],
 
-            'capacity'    => ['nullable','integer','min:1'],
+            'capacity'      => ['nullable','integer','min:1'],
+            'monthly_price' => ['nullable','numeric','min:0','max:9999.99'],
             'teacher_id'  => ['nullable','integer','exists:users,id'],
 
             // Workshop sessions
