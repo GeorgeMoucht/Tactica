@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClassController;
 use App\Http\Controllers\Api\V1\EnrollmentController;
@@ -83,5 +84,12 @@ Route::prefix('v1')->group(function () {
         Route::patch('/monthly-dues/{due}/pay', [MonthlyDueController::class, 'pay']);
         Route::patch('/monthly-dues/{due}/waive', [MonthlyDueController::class, 'waive']);
         Route::post('/monthly-dues/generate', [MonthlyDueController::class, 'generate']);
+
+        // Attendance & Dashboard
+        Route::get('/dashboard/today-sessions', [AttendanceController::class, 'todaySessions']);
+        Route::get('/sessions/{sessionId}/attendance', [AttendanceController::class, 'roster']);
+        Route::post('/sessions/{sessionId}/attendance', [AttendanceController::class, 'store']);
+        Route::get('/classes/{classId}/attendance-history', [AttendanceController::class, 'history']);
+        Route::get('/classes/{classId}/attendance-summary', [AttendanceController::class, 'summary']);
     });
 });

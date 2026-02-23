@@ -15,161 +15,213 @@ class ClassEnrollmentSeeder extends Seeder
         $students = Student::all();
         $classes = CourseClass::where('type', 'weekly')->get();
 
-        if ($students->isEmpty() || $classes->isEmpty()) {
-            $this->command?->warn('ClassEnrollmentSeeder: No students or classes found. Run TestStudentsSeeder and CourseClassSeeder first.');
+        if ($students->count() < 10 || $classes->isEmpty()) {
+            $this->command?->warn('ClassEnrollmentSeeder: Need at least 10 students and classes. Run TestStudentsSeeder and CourseClassSeeder first.');
             return;
         }
 
-        // Get specific classes by title
-        $painting = $classes->firstWhere('title', 'Ζωγραφική Αρχαρίων');
-        $drawing = $classes->firstWhere('title', 'Σχέδιο (Μέσο επίπεδο)');
-        $ceramics = $classes->firstWhere('title', 'Κεραμική');
-        $advancedPainting = $classes->firstWhere('title', 'Ζωγραφική Προχωρημένων');
-        $childPainting = $classes->firstWhere('title', 'Παιδική Ζωγραφική');
-        $openStudio = $classes->firstWhere('title', 'Open Studio');
+        // Map classes by title for easy reference
+        $painting       = $classes->firstWhere('title', 'Ζωγραφική Αρχαρίων');
+        $drawing        = $classes->firstWhere('title', 'Σχέδιο (Μέσο επίπεδο)');
+        $ceramics       = $classes->firstWhere('title', 'Κεραμική');
+        $advPainting    = $classes->firstWhere('title', 'Ζωγραφική Προχωρημένων');
+        $portfolioLab   = $classes->firstWhere('title', 'Portfolio Lab');
+        $openStudio     = $classes->firstWhere('title', 'Open Studio');
+        $childPainting  = $classes->firstWhere('title', 'Παιδική Ζωγραφική');
 
-        // Get students by name
-        $anna = $students->firstWhere('first_name', 'Anna');           // Adult member
-        $nikolas = $students->firstWhere('first_name', 'Nikolas');     // Adult member
-        $dimitris = $students->firstWhere('first_name', 'Dimitris');   // Minor member
-        $stella = $students->firstWhere('first_name', 'Stella');       // Minor member
-        $panagiotis = $students->firstWhere('first_name', 'Panagiotis'); // Minor member
-        $katerina = $students->firstWhere('first_name', 'Katerina');   // Adult member
+        // Index students by first_name for convenience
+        $s = [];
+        foreach ($students as $student) {
+            $s[$student->first_name] = $student;
+        }
 
-        $enrollmentCount = 0;
+        $count = 0;
 
         /*
         |--------------------------------------------------------------------------
-        | 1. Simple Active Enrollments
+        | Ζωγραφική Αρχαρίων (capacity 12) — 10 active + 1 withdrawn
         |--------------------------------------------------------------------------
         */
-        if ($painting && $stella) {
-            ClassEnrollment::create([
-                'student_id'  => $stella->id,
-                'class_id'    => $painting->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::today()->subMonths(2),
-                'notes'       => 'Beginner - shows great enthusiasm',
-            ]);
-            $enrollmentCount++;
-        }
-
-        if ($childPainting && $panagiotis) {
-            ClassEnrollment::create([
-                'student_id'  => $panagiotis->id,
-                'class_id'    => $childPainting->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::today()->subMonths(3),
-            ]);
-            $enrollmentCount++;
-        }
-
-        if ($advancedPainting && $anna) {
-            ClassEnrollment::create([
-                'student_id'  => $anna->id,
-                'class_id'    => $advancedPainting->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::today()->subMonths(2),
-                'notes'       => 'Very talented, preparing portfolio',
-            ]);
-            $enrollmentCount++;
-        }
-
-        if ($drawing && $dimitris) {
-            ClassEnrollment::create([
-                'student_id'  => $dimitris->id,
-                'class_id'    => $drawing->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::today()->subMonths(4),
-            ]);
-            $enrollmentCount++;
+        if ($painting) {
+            $enrollees = ['Stella', 'Katerina', 'Nikolas', 'Michalis', 'Stavros',
+                          'Despina', 'Maria', 'Nefeli', 'Vasiliki', 'Thodoris'];
+            foreach ($enrollees as $i => $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $painting->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 5)),
+                ]);
+                $count++;
+            }
+            // Re-enrollment scenario: Katerina withdrew and came back
+            if (isset($s['Katerina'])) {
+                ClassEnrollment::create([
+                    'student_id'   => $s['Katerina']->id,
+                    'class_id'     => $painting->id,
+                    'status'       => 'withdrawn',
+                    'enrolled_at'  => Carbon::create(2024, 9, 1),
+                    'withdrawn_at' => Carbon::create(2024, 12, 15),
+                    'notes'        => 'First enrollment — withdrew for personal reasons',
+                ]);
+                $count++;
+            }
         }
 
         /*
         |--------------------------------------------------------------------------
-        | 2. Withdrawn Enrollment
+        | Σχέδιο Μέσο επίπεδο (capacity 10) — 9 active
         |--------------------------------------------------------------------------
         */
-        if ($ceramics && $nikolas) {
-            ClassEnrollment::create([
-                'student_id'   => $nikolas->id,
-                'class_id'     => $ceramics->id,
-                'status'       => 'withdrawn',
-                'enrolled_at'  => Carbon::today()->subMonths(5),
-                'withdrawn_at' => Carbon::today()->subMonths(3),
-                'notes'        => 'Withdrew due to schedule conflict',
-            ]);
-            $enrollmentCount++;
+        if ($drawing) {
+            $enrollees = ['Dimitris', 'Alexandros', 'Spiros', 'Ioanna', 'Kostas',
+                          'Thanasis', 'Anna', 'Eleftheria', 'Stavros'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $drawing->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 6)),
+                ]);
+                $count++;
+            }
         }
 
         /*
         |--------------------------------------------------------------------------
-        | 3. RE-ENROLLMENT SCENARIO (Demonstrates history feature!)
-        |    Katerina: enrolled -> withdrawn -> re-enrolled (2 records)
+        | Κεραμική (capacity 8) — 8 active + 1 withdrawn
         |--------------------------------------------------------------------------
         */
-        if ($painting && $katerina) {
-            // First enrollment period (Sep 2024 - Dec 2024)
-            ClassEnrollment::create([
-                'student_id'   => $katerina->id,
-                'class_id'     => $painting->id,
-                'status'       => 'withdrawn',
-                'enrolled_at'  => Carbon::create(2024, 9, 1),
-                'withdrawn_at' => Carbon::create(2024, 12, 15),
-                'notes'        => 'First enrollment - withdrew for personal reasons',
-            ]);
-            $enrollmentCount++;
-
-            // Second enrollment period (Feb 2025 - present)
-            ClassEnrollment::create([
-                'student_id'  => $katerina->id,
-                'class_id'    => $painting->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::create(2025, 2, 1),
-                'notes'       => 'Re-enrolled after break - continuing from where she left',
-            ]);
-            $enrollmentCount++;
+        if ($ceramics) {
+            $enrollees = ['Eleftheria', 'Thanasis', 'Ioanna', 'Dimitra', 'Spiros',
+                          'Despina', 'Petros', 'Anna'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $ceramics->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 5)),
+                ]);
+                $count++;
+            }
+            // Nikolas withdrew
+            if (isset($s['Nikolas'])) {
+                ClassEnrollment::create([
+                    'student_id'   => $s['Nikolas']->id,
+                    'class_id'     => $ceramics->id,
+                    'status'       => 'withdrawn',
+                    'enrolled_at'  => Carbon::today()->subMonths(5),
+                    'withdrawn_at' => Carbon::today()->subMonths(3),
+                    'notes'        => 'Withdrew due to schedule conflict',
+                ]);
+                $count++;
+            }
         }
 
         /*
         |--------------------------------------------------------------------------
-        | 4. Another Re-enrollment (Anna in Open Studio)
+        | Ζωγραφική Προχωρημένων (capacity 10) — 8 active
         |--------------------------------------------------------------------------
         */
-        if ($openStudio && $anna) {
-            // First period
-            ClassEnrollment::create([
-                'student_id'   => $anna->id,
-                'class_id'     => $openStudio->id,
-                'status'       => 'withdrawn',
-                'enrolled_at'  => Carbon::create(2024, 6, 1),
-                'withdrawn_at' => Carbon::create(2024, 8, 31),
-                'notes'        => 'Summer session - completed',
-            ]);
-            $enrollmentCount++;
-
-            // Second period
-            ClassEnrollment::create([
-                'student_id'   => $anna->id,
-                'class_id'     => $openStudio->id,
-                'status'       => 'withdrawn',
-                'enrolled_at'  => Carbon::create(2024, 10, 1),
-                'withdrawn_at' => Carbon::create(2024, 12, 20),
-                'notes'        => 'Fall session - completed',
-            ]);
-            $enrollmentCount++;
-
-            // Third period (current)
-            ClassEnrollment::create([
-                'student_id'  => $anna->id,
-                'class_id'    => $openStudio->id,
-                'status'      => 'active',
-                'enrolled_at' => Carbon::create(2025, 1, 15),
-                'notes'       => 'Third enrollment - regular participant',
-            ]);
-            $enrollmentCount++;
+        if ($advPainting) {
+            $enrollees = ['Anna', 'Kostas', 'Eleftheria', 'Alexandros', 'Dimitra',
+                          'Stella', 'Katerina', 'Dimitris'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $advPainting->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 5)),
+                ]);
+                $count++;
+            }
         }
 
-        $this->command?->info("ClassEnrollmentSeeder: Created {$enrollmentCount} enrollment records (including re-enrollments).");
+        /*
+        |--------------------------------------------------------------------------
+        | Portfolio Lab (capacity 6) — 6 active
+        |--------------------------------------------------------------------------
+        */
+        if ($portfolioLab) {
+            $enrollees = ['Kostas', 'Anna', 'Alexandros', 'Dimitra', 'Eleftheria', 'Spiros'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $portfolioLab->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 4)),
+                ]);
+                $count++;
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Open Studio (capacity 12) — 10 active + re-enrollment history
+        |--------------------------------------------------------------------------
+        */
+        if ($openStudio) {
+            $enrollees = ['Anna', 'Nikolas', 'Katerina', 'Thanasis', 'Alexandros',
+                          'Kostas', 'Stavros', 'Maria', 'Dimitra', 'Ioanna'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $openStudio->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 5)),
+                ]);
+                $count++;
+            }
+            // Anna's re-enrollment history
+            if (isset($s['Anna'])) {
+                ClassEnrollment::create([
+                    'student_id'   => $s['Anna']->id,
+                    'class_id'     => $openStudio->id,
+                    'status'       => 'withdrawn',
+                    'enrolled_at'  => Carbon::create(2024, 6, 1),
+                    'withdrawn_at' => Carbon::create(2024, 8, 31),
+                    'notes'        => 'Summer session — completed',
+                ]);
+                $count++;
+
+                ClassEnrollment::create([
+                    'student_id'   => $s['Anna']->id,
+                    'class_id'     => $openStudio->id,
+                    'status'       => 'withdrawn',
+                    'enrolled_at'  => Carbon::create(2024, 10, 1),
+                    'withdrawn_at' => Carbon::create(2024, 12, 20),
+                    'notes'        => 'Fall session — completed',
+                ]);
+                $count++;
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Παιδική Ζωγραφική (capacity 15) — 10 active (minors)
+        |--------------------------------------------------------------------------
+        */
+        if ($childPainting) {
+            $enrollees = ['Panagiotis', 'Giorgos', 'Christina', 'Ioanna', 'Petros',
+                          'Michalis', 'Nefeli', 'Despina', 'Aggelos', 'Thodoris'];
+            foreach ($enrollees as $name) {
+                if (!isset($s[$name])) continue;
+                ClassEnrollment::create([
+                    'student_id'  => $s[$name]->id,
+                    'class_id'    => $childPainting->id,
+                    'status'      => 'active',
+                    'enrolled_at' => Carbon::today()->subMonths(rand(2, 5)),
+                ]);
+                $count++;
+            }
+        }
+
+        $this->command?->info("ClassEnrollmentSeeder: Created {$count} enrollment records across all weekly classes.");
     }
 }

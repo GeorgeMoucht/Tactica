@@ -248,7 +248,215 @@ class TestStudentsSeeder extends Seeder
         $this->registerStudent($student9, $registrationProduct, Carbon::today()->subMonths(4));
         $this->registerStudent($student10, $registrationProduct, Carbon::today()->subMonths(4));
 
-        $this->command->info('✅ Test students, guardians & memberships seeded successfully!');
+        /*
+        |--------------------------------------------------------------------------
+        | 11-25. Additional students for comprehensive class populations
+        |--------------------------------------------------------------------------
+        */
+        $guardian5 = Guardian::create([
+            'first_name'        => 'Vasilis',
+            'last_name'         => 'Antonopoulos',
+            'email'             => 'vasilis.ant@example.com',
+            'phone'             => '2108888888',
+            'preferred_contact' => 'phone',
+        ]);
+
+        $guardian6 = Guardian::create([
+            'first_name'        => 'Eirini',
+            'last_name'         => 'Konstantinou',
+            'email'             => 'eirini.k@example.com',
+            'phone'             => '2109999999',
+            'preferred_contact' => 'email',
+        ]);
+
+        // 11. Adult member
+        $student11 = Student::create([
+            'first_name'        => 'Alexandros',
+            'last_name'         => 'Nikolaou',
+            'birthdate'         => Carbon::today()->subYears(28),
+            'email'             => 'alex.nikolaou@example.com',
+            'phone'             => '6971111111',
+            'level'             => 'intermediate',
+            'interests'         => ['painting', 'drawing'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student11, $registrationProduct, Carbon::today()->subMonths(5));
+
+        // 12. Adult member
+        $student12 = Student::create([
+            'first_name'        => 'Eleftheria',
+            'last_name'         => 'Vasileiou',
+            'birthdate'         => Carbon::today()->subYears(35),
+            'email'             => 'eleftheria.v@example.com',
+            'phone'             => '6972222222',
+            'level'             => 'advanced',
+            'interests'         => ['ceramics', 'painting'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student12, $registrationProduct, Carbon::today()->subMonths(6));
+
+        // 13. Minor with guardian5
+        $student13 = Student::create([
+            'first_name'    => 'Michalis',
+            'last_name'     => 'Antonopoulos',
+            'birthdate'     => Carbon::today()->subYears(13),
+            'level'         => 'beginner',
+            'interests'     => ['painting'],
+            'consent_media' => true,
+        ]);
+        $student13->guardians()->attach($guardian5->id, ['relation' => 'father']);
+        $this->registerStudent($student13, $registrationProduct, Carbon::today()->subMonths(3));
+
+        // 14. Adult member
+        $student14 = Student::create([
+            'first_name'        => 'Stavros',
+            'last_name'         => 'Papandreou',
+            'birthdate'         => Carbon::today()->subYears(19),
+            'email'             => 'stavros.p@example.com',
+            'phone'             => '6973333333',
+            'level'             => 'beginner',
+            'interests'         => ['drawing'],
+            'consent_media'     => false,
+        ]);
+        $this->registerStudent($student14, $registrationProduct, Carbon::today()->subMonths(2));
+
+        // 15. Minor with guardian6
+        $student15 = Student::create([
+            'first_name'    => 'Despina',
+            'last_name'     => 'Konstantinou',
+            'birthdate'     => Carbon::today()->subYears(10),
+            'level'         => 'beginner',
+            'interests'     => ['painting', 'ceramics'],
+            'consent_media' => true,
+        ]);
+        $student15->guardians()->attach($guardian6->id, ['relation' => 'mother']);
+        $this->registerStudent($student15, $registrationProduct, Carbon::today()->subMonths(4));
+
+        // 16. Adult member
+        $student16 = Student::create([
+            'first_name'        => 'Thanasis',
+            'last_name'         => 'Deligiannis',
+            'birthdate'         => Carbon::today()->subYears(45),
+            'email'             => 'thanasis.d@example.com',
+            'phone'             => '6974444444',
+            'level'             => 'intermediate',
+            'interests'         => ['ceramics'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student16, $registrationProduct, Carbon::today()->subMonths(5));
+
+        // 17. Adult non-member
+        $student17 = Student::create([
+            'first_name'        => 'Maria',
+            'last_name'         => 'Alexiou',
+            'birthdate'         => Carbon::today()->subYears(24),
+            'email'             => 'maria.alex@example.com',
+            'phone'             => '6975555555',
+            'level'             => 'beginner',
+            'interests'         => ['painting'],
+            'consent_media'     => true,
+        ]);
+
+        // 18. Minor with guardian5
+        $student18 = Student::create([
+            'first_name'    => 'Nefeli',
+            'last_name'     => 'Antonopoulou',
+            'birthdate'     => Carbon::today()->subYears(11),
+            'level'         => 'beginner',
+            'interests'     => ['drawing', 'painting'],
+            'consent_media' => true,
+        ]);
+        $student18->guardians()->attach($guardian5->id, ['relation' => 'father']);
+        $this->registerStudent($student18, $registrationProduct, Carbon::today()->subMonths(3));
+
+        // 19. Adult member
+        $student19 = Student::create([
+            'first_name'        => 'Kostas',
+            'last_name'         => 'Papadimitriou',
+            'birthdate'         => Carbon::today()->subYears(32),
+            'email'             => 'kostas.pap@example.com',
+            'phone'             => '6976666666',
+            'level'             => 'advanced',
+            'interests'         => ['painting', 'drawing'],
+            'consent_media'     => false,
+        ]);
+        $this->registerStudent($student19, $registrationProduct, Carbon::today()->subMonths(4));
+
+        // 20. Adult member
+        $student20 = Student::create([
+            'first_name'        => 'Ioanna',
+            'last_name'         => 'Makri',
+            'birthdate'         => Carbon::today()->subYears(27),
+            'email'             => 'ioanna.makri@example.com',
+            'phone'             => '6977777777',
+            'level'             => 'intermediate',
+            'interests'         => ['ceramics', 'drawing'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student20, $registrationProduct, Carbon::today()->subMonths(3));
+
+        // 21. Minor with guardian6
+        $student21 = Student::create([
+            'first_name'    => 'Aggelos',
+            'last_name'     => 'Konstantinou',
+            'birthdate'     => Carbon::today()->subYears(8),
+            'level'         => 'beginner',
+            'interests'     => ['painting'],
+            'consent_media' => false,
+        ]);
+        $student21->guardians()->attach($guardian6->id, ['relation' => 'mother']);
+        $this->registerStudent($student21, $registrationProduct, Carbon::today()->subMonths(4));
+
+        // 22. Adult non-member
+        $student22 = Student::create([
+            'first_name'        => 'Vasiliki',
+            'last_name'         => 'Georgiadi',
+            'birthdate'         => Carbon::today()->subYears(40),
+            'email'             => 'vasiliki.g@example.com',
+            'phone'             => '6978888888',
+            'level'             => 'beginner',
+            'interests'         => ['painting'],
+            'consent_media'     => true,
+        ]);
+
+        // 23. Adult member
+        $student23 = Student::create([
+            'first_name'        => 'Spiros',
+            'last_name'         => 'Karamanlis',
+            'birthdate'         => Carbon::today()->subYears(20),
+            'email'             => 'spiros.k@example.com',
+            'phone'             => '6979999999',
+            'level'             => 'intermediate',
+            'interests'         => ['drawing', 'ceramics'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student23, $registrationProduct, Carbon::today()->subMonths(5));
+
+        // 24. Minor with guardian1 (Maria)
+        $student24 = Student::create([
+            'first_name'    => 'Thodoris',
+            'last_name'     => 'Papadopoulos',
+            'birthdate'     => Carbon::today()->subYears(7),
+            'level'         => 'beginner',
+            'interests'     => ['painting'],
+            'consent_media' => false,
+        ]);
+        $student24->guardians()->attach($guardian1->id, ['relation' => 'mother']);
+
+        // 25. Adult member
+        $student25 = Student::create([
+            'first_name'        => 'Dimitra',
+            'last_name'         => 'Sotiriou',
+            'birthdate'         => Carbon::today()->subYears(29),
+            'email'             => 'dimitra.s@example.com',
+            'phone'             => '6970000000',
+            'level'             => 'intermediate',
+            'interests'         => ['painting', 'ceramics'],
+            'consent_media'     => true,
+        ]);
+        $this->registerStudent($student25, $registrationProduct, Carbon::today()->subMonths(6));
+
+        $this->command->info('Test students, guardians & memberships seeded successfully! (25 students)');
     }
 
     private function registerStudent(
