@@ -23,7 +23,9 @@ use App\Repositories\Eloquent\EloquentStudentEntitlementRepository;
 use App\Repositories\Eloquent\EloquentStudentPurchaseRepository;
 use App\Repositories\Eloquent\EloquentStudentRepository;
 use App\Repositories\Eloquent\EloquentUserRepository;
+use App\Repositories\Contracts\AttendanceRepository;
 use App\Repositories\Contracts\MonthlyDueRepository;
+use App\Repositories\Eloquent\EloquentAttendanceRepository;
 use App\Repositories\Eloquent\EloquentMonthlyDueRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -45,5 +47,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ClassRepository::class, EloquentClassRepository::class);
         $this->app->bind(EnrollmentRepository::class, EloquentEnrollmentRepository::class);
         $this->app->bind(MonthlyDueRepository::class, EloquentMonthlyDueRepository::class);
+        $this->app->bind(AttendanceRepository::class, EloquentAttendanceRepository::class);
     }
 }
