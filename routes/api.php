@@ -3,7 +3,9 @@
 use App\Http\Controllers\Api\V1\AttendanceController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClassController;
+use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\EnrollmentController;
+use App\Http\Controllers\Api\V1\InstructorHoursController;
 use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\MembershipController;
 use App\Http\Controllers\Api\V1\MonthlyDueController;
@@ -84,6 +86,10 @@ Route::prefix('v1')->group(function () {
         Route::patch('/monthly-dues/{due}/pay', [MonthlyDueController::class, 'pay']);
         Route::patch('/monthly-dues/{due}/waive', [MonthlyDueController::class, 'waive']);
         Route::post('/monthly-dues/generate', [MonthlyDueController::class, 'generate']);
+
+        Route::get('/dashboard/widgets', [DashboardController::class, 'widgets']);
+
+        Route::get('/hours/instructors', [InstructorHoursController::class, 'index']);
 
         // Attendance & Dashboard
         Route::get('/dashboard/today-sessions', [AttendanceController::class, 'todaySessions']);
