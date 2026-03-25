@@ -23,4 +23,15 @@ class DashboardController extends BaseApiController
             'Dashboard widgets retrieved'
         );
     }
+
+    /**
+     * GET /dashboard/financials
+     */
+    public function financials()
+    {
+        return $this->getSuccess(
+            $this->service->financials(),
+            'Dashboard financials retrieved'
+        );
+    }
 }

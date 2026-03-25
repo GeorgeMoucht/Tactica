@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ClassController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\EnrollmentController;
+use App\Http\Controllers\Api\V1\ExpenseCategoryController;
+use App\Http\Controllers\Api\V1\ExpenseController;
 use App\Http\Controllers\Api\V1\InstructorHoursController;
 use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\MembershipController;
@@ -88,8 +90,23 @@ Route::prefix('v1')->group(function () {
         Route::post('/monthly-dues/generate', [MonthlyDueController::class, 'generate']);
 
         Route::get('/dashboard/widgets', [DashboardController::class, 'widgets']);
+        Route::get('/dashboard/financials', [DashboardController::class, 'financials']);
 
         Route::get('/hours/instructors', [InstructorHoursController::class, 'index']);
+
+        // Expense Categories
+        Route::get('/expense-categories', [ExpenseCategoryController::class, 'index']);
+        Route::post('/expense-categories', [ExpenseCategoryController::class, 'store']);
+        Route::put('/expense-categories/{id}', [ExpenseCategoryController::class, 'update']);
+        Route::delete('/expense-categories/{id}', [ExpenseCategoryController::class, 'destroy']);
+
+        // Expenses
+        Route::get('/expenses', [ExpenseController::class, 'index']);
+        Route::post('/expenses', [ExpenseController::class, 'store']);
+        Route::get('/expenses/{id}', [ExpenseController::class, 'show']);
+        Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
+        Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+        Route::patch('/expenses/{id}/pay', [ExpenseController::class, 'pay']);
 
         // Attendance & Dashboard
         Route::get('/dashboard/today-sessions', [AttendanceController::class, 'todaySessions']);

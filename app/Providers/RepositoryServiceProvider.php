@@ -29,6 +29,10 @@ use App\Repositories\Contracts\InstructorHoursRepository;
 use App\Repositories\Contracts\MonthlyDueRepository;
 use App\Repositories\Eloquent\EloquentAttendanceRepository;
 use App\Repositories\Eloquent\EloquentDashboardRepository;
+use App\Repositories\Contracts\ExpenseCategoryRepository;
+use App\Repositories\Contracts\ExpenseRepository;
+use App\Repositories\Eloquent\EloquentExpenseCategoryRepository;
+use App\Repositories\Eloquent\EloquentExpenseRepository;
 use App\Repositories\Eloquent\EloquentInstructorHoursRepository;
 use App\Repositories\Eloquent\EloquentMonthlyDueRepository;
 
@@ -54,5 +58,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AttendanceRepository::class, EloquentAttendanceRepository::class);
         $this->app->bind(DashboardRepository::class, EloquentDashboardRepository::class);
         $this->app->bind(InstructorHoursRepository::class, EloquentInstructorHoursRepository::class);
+        $this->app->bind(ExpenseCategoryRepository::class, EloquentExpenseCategoryRepository::class);
+        $this->app->bind(ExpenseRepository::class, EloquentExpenseRepository::class);
     }
 }
