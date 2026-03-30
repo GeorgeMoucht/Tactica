@@ -78,26 +78,25 @@ class DashboardService
             ->map(fn (Student $s) => [
                 'id'              => $s->id,
                 'created_at'      => $s->created_at->toDateString(),
-                'student_name'    => $s->name,
-                'guardian_name'   => $s->guardians->first()?->name ?? '—',
-                'student_summary' => $this->studentSummary($s),
+                'guardian_id'     => $s->guardians->first()?->id,
+                'guardian_name'   => $s->guardians->first()?->name,
+                'students'        => $this->guardianStudents($s),
             ])
             ->toArray();
     }
 
-    private function studentSummary(Student $student): string
+    private function guardianStudents(Student $student): array
     {
         $guardian = $student->guardians->first();
 
         if (! $guardian) {
-            return $student->name;
+            return [['id' => $student->id, 'name' => $student->name]];
         }
 
-        $siblingCount = $guardian->students()->count();
-
-        return $siblingCount === 1
-            ? '1 μαθητής'
-            : "{$siblingCount} μαθητές";
+        return $guardian->students->map(fn (Student $s) => [
+            'id'   => $s->id,
+            'name' => $s->name,
+        ])->toArray();
     }
 
     public function financials(): array

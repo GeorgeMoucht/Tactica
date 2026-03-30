@@ -47,7 +47,7 @@ class EloquentDashboardRepository implements DashboardRepository
 
     public function recentStudents(int $limit = 5): Collection
     {
-        return Student::with('guardians')
+        return Student::with('guardians.students')
             ->latest()
             ->take($limit)
             ->get();
